@@ -2,6 +2,25 @@ import type { Request, Response } from "express";
 import Team from "../models/teamModel.js";
 import mongoose from "mongoose";
 
+export const createTeam = async (req: Request, res: Response) => {
+	try {
+		const { label, value } = req.body;
+		const newTeam = await Team.create({ label, value });
+
+		return res.status(201).json(newTeam);
+	} catch (error) {
+		if (error instanceof mongoose.Error.ValidationError) {
+			return res.status(400).json({
+				message: error.message
+			});
+		}
+
+		return res.status(500).json({
+			message: "Internal server error"
+		});
+	}
+};
+
 export const getAllTeams = async (req: Request, res: Response) => {
 	try {
 		const teams = await Team.find();

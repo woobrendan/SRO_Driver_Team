@@ -1,5 +1,25 @@
 import type { Request, Response } from "express";
 import Driver from "../models/driverModel.js";
+import mongoose from "mongoose";
+
+export const createDriver = async (req: Request, res: Response) => {
+	try {
+		const { label, value } = req.body;
+		const newDriver = await Driver.create({ label, value });
+
+		return res.status(201).json(newDriver);
+	} catch (error) {
+		if (error instanceof mongoose.Error.ValidationError) {
+			return res.status(400).json({
+				message: error.message
+			});
+		}
+
+		return res.status(500).json({
+			message: "Internal server error"
+		});
+	}
+};
 
 export const getAllDrivers = async (req: Request, res: Response) => {
 	try {
