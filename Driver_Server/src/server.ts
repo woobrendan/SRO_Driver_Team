@@ -1,25 +1,50 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import http from "http";
 
-dotenv.config();
+import { config } from "../config/config.js";
+
+import teamRoute from "./routes/teamRoutes.js";
+import driverRoute from "./routes/driverRoutes.js";
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-	res.send("API running");
-});
+mongoose.set("strictQuery", true);
 
-const PORT = process.env.PORT || 5000;
+mongoose
+	.connect(config.mongo.url)
+	.then(() => {
+		console.log("Connected");
+		startServer();
+	})
+	.catch((error) => {
+		console.log("Error connecting to server: ", error);
+	});
 
-// mongoose.connect(process.env.MONGODB_URI!)
-//   .then(() => console.log("MongoDB connected"))
-//   .catch(err => console.error(err));
+//** Only Start Server if Mongo Connects */
 
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-});
+const startServer = () => {
+	app.use(cors());
+
+	app.use(express.urlencoded({ extended: true }));
+	app.use(express.json());
+
+	//** Routes */
+	app.use("/api/teams", teamRoute);
+	app.use("/api/drivers", driverRoute);
+
+	//** Error handling */
+	app.use((req, res) => {
+		return res.status(404).json({
+			message: "Route not found"
+		});
+	});
+
+	app.listen(config.server.port, () => {
+		console.log(`Server running on port ${config.server.port}`);
+	});
+};
