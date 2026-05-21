@@ -1,13 +1,15 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "./app/hooks";
+import { fetchTeams } from "./store/teams/teamsActions";
+
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { useEffect } from "react";
 
 const App = () => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
-	// useEffect(() => {
-	// 	dispatch(fetchSeries());
-	// }, [dispatch]);
+	useEffect(() => {
+		dispatch(fetchTeams());
+	}, [dispatch]);
 
 	return (
 		<Router>
