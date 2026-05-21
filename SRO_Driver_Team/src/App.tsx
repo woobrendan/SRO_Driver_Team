@@ -17,6 +17,7 @@ const App = () => {
 			<div className="App">
 				<Routes>{/* <Route path="/" element={<Podium />} /> */}</Routes>
 			</div>
+			<h1>Hello World</h1>
 		</Router>
 	);
 };
