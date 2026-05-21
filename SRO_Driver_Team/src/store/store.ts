@@ -4,11 +4,10 @@ import teamsSlice from "./teams/teamsSlice";
 const store = configureStore({
 	reducer: {
 		teams: teamsSlice.reducer
-		// entry: entrySlice.reducer,
-		// results: resultsSlice.reducer,
-		// events: eventSlice.reducer,
-		// series: seriesSlice.reducer,
 	}
 });
 
 export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
