@@ -14,7 +14,7 @@ const teamsSlice = createSlice({
 	name: "teams",
 	initialState,
 	reducers: {
-		setSeries(state, action: PayloadAction<Team[]>) {
+		setTeams(state, action: PayloadAction<Team[]>) {
 			state.teamsArr = action.payload;
 		},
 
@@ -41,6 +41,6 @@ const teamsSlice = createSlice({
 	}
 });
 
-export const seriesActions = teamsSlice.actions;
+export const teamActions = teamsSlice.actions;
 
 export default teamsSlice;
