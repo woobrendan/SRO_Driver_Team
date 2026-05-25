@@ -4,6 +4,9 @@ import { fetchTeams } from "./store/teams/teamsActions";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { useEffect } from "react";
 
+import Home from "./components/Home";
+import ListDisplay from "./components/ListDisplay";
+
 const App = () => {
 	const dispatch = useAppDispatch();
 
@@ -15,9 +18,11 @@ const App = () => {
 		<Router>
 			{/* <NavBar /> */}
 			<div className="App">
-				<Routes>{/* <Route path="/" element={<Podium />} /> */}</Routes>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/:type" element={<ListDisplay />} />
+				</Routes>
 			</div>
-			<h1>Hello World</h1>
 		</Router>
 	);
 };
