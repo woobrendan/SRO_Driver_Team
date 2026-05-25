@@ -6,11 +6,11 @@ const Home = () => {
 			<h1>Select List</h1>
 
 			<div>
-				<Link to="/team">
+				<Link to="/teams">
 					<button>Teams</button>
 				</Link>
 
-				<Link to="/driver">
+				<Link to="/drivers">
 					<button>Drivers</button>
 				</Link>
 			</div>
