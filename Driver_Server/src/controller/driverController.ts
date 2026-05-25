@@ -23,8 +23,8 @@ export const createDriver = async (req: Request, res: Response) => {
 
 export const getAllDrivers = async (req: Request, res: Response) => {
 	try {
-		const Drivers = await Driver.find();
-		res.status(200).json({ Drivers });
+		const drivers = await Driver.find();
+		res.status(200).json(drivers);
 	} catch (error) {
 		res.status(500).json({ error });
 	}

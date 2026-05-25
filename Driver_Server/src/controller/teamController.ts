@@ -24,7 +24,7 @@ export const createTeam = async (req: Request, res: Response) => {
 export const getAllTeams = async (req: Request, res: Response) => {
 	try {
 		const teams = await Team.find();
-		res.status(200).json({ teams });
+		res.status(200).json(teams);
 	} catch (error) {
 		res.status(500).json({ error });
 	}
