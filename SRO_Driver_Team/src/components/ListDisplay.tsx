@@ -9,7 +9,7 @@ const ListDisplay = () => {
 
 	const drivers = useAppSelector((state) => state.drivers.driversArr);
 
-	const list = type === "team" ? teams : type === "driver" ? drivers : [];
+	const list = type === "teams" ? teams : type === "drivers" ? drivers : [];
 
 	return (
 		<div>
