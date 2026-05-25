@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import teamsSlice from "./teams/teamsSlice";
+import driversSlice from "./drivers/driversSlice";
 
 const store = configureStore({
 	reducer: {
-		teams: teamsSlice.reducer
+		teams: teamsSlice.reducer,
+		drivers: driversSlice.reducer
 	}
 });
 
