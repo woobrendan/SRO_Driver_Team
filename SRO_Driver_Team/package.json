@@ -5,10 +5,17 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+<<<<<<< HEAD
 		"start": "vite",
 		"build": "tsc -b && vite build",
 		"lint": "eslint .",
 		"preview": "vite preview"
+=======
+		"build": "tsc -b && vite build",
+		"lint": "eslint .",
+		"preview": "vite preview",
+		"start": "vite"
+>>>>>>> 7222436 (fix package for install)
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.12.0",
