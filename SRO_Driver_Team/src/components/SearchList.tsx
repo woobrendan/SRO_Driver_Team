@@ -10,6 +10,11 @@ type SearchListProps<T> = {
 	filterFn?: (item: T, query: string) => boolean;
 	placeholder?: string;
 	emptyMessage?: string;
+	onItemClick?: (item: T) => void;
+	getTitle?: (item: T) => string;
+	sortFn?: (a: T, b: T) => number;
+	onAdd?: () => void;
+	addLabel?: string;
 };
 
 const SearchList = <T,>({
@@ -19,24 +24,32 @@ const SearchList = <T,>({
 	searchKeys,
 	filterFn,
 	placeholder = "Search...",
-	emptyMessage = "No results found."
+	emptyMessage = "No results found.",
+	onItemClick,
+	getTitle,
+	sortFn,
+	onAdd,
+	addLabel = "Add"
 }: SearchListProps<T>) => {
 	const [query, setQuery] = useState("");
 
 	const filtered = useMemo(() => {
 		const q = query.trim().toLowerCase();
-		if (!q) return items;
 
-		return items.filter((item) => {
-			if (filterFn) return filterFn(item, q);
-			if (!searchKeys?.length) return true;
-			return searchKeys.some((key) =>
-				String(item[key] ?? "")
-					.toLowerCase()
-					.includes(q)
-			);
-		});
-	}, [items, query, searchKeys, filterFn]);
+		const matches = !q
+			? items
+			: items.filter((item) => {
+					if (filterFn) return filterFn(item, q);
+					if (!searchKeys?.length) return true;
+					return searchKeys.some((key) =>
+						String(item[key] ?? "")
+							.toLowerCase()
+							.includes(q)
+					);
+				});
+
+		return sortFn ? [...matches].sort(sortFn) : matches;
+	}, [items, query, searchKeys, filterFn, sortFn]);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setQuery(e.target.value);
@@ -51,16 +64,27 @@ const SearchList = <T,>({
 				placeholder={placeholder}
 				className="search-list__input"
 			/>
-			<p className="search-list__count">
-				{filtered.length} of {items.length}
-			</p>
+			{onAdd && (
+				<button type="button" className="search-list__add" onClick={onAdd}>
+					{addLabel}
+				</button>
+			)}
 
 			{filtered.length === 0 ? (
 				<p className="search-list__empty">{emptyMessage}</p>
 			) : (
 				<ul className="search-list__items">
 					{filtered.map((item) => (
-						<li key={getKey(item)}>{renderItem(item)}</li>
+						<li key={getKey(item)}>
+							<button
+								type="button"
+								className="search-list__card"
+								onClick={() => onItemClick?.(item)}
+								title={getTitle?.(item)}
+							>
+								{renderItem(item)}
+							</button>
+						</li>
 					))}
 				</ul>
 			)}
