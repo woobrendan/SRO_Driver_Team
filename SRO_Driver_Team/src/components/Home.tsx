@@ -1,18 +1,16 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../styling/list.css";
 
 const Home = () => {
+	const navigate = useNavigate();
+
 	return (
 		<div>
 			<h1>Select List</h1>
 
 			<div>
-				<Link to="/teams">
-					<button>Teams</button>
-				</Link>
-
-				<Link to="/drivers">
-					<button>Drivers</button>
-				</Link>
+				<button onClick={() => navigate("/teams")}>Teams</button>
+				<button onClick={() => navigate("/drivers")}>Drivers</button>
 			</div>
 		</div>
 	);
