@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = `${process.env.MONGO_URI}driver_team`;
 
 if (!MONGO_URI) {
 	throw new Error("MONGO_URI is missing");
