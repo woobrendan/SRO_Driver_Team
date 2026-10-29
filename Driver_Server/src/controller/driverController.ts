@@ -4,20 +4,14 @@ import mongoose from "mongoose";
 
 export const createDriver = async (req: Request, res: Response) => {
 	try {
-		const { label, value } = req.body;
-		const newDriver = await Driver.create({ label, value });
-
-		return res.status(201).json(newDriver);
-	} catch (error) {
-		if (error instanceof mongoose.Error.ValidationError) {
-			return res.status(400).json({
-				message: error.message
-			});
+		const label = String(req.body.label ?? "").trim();
+		if (!label) {
+			return res.status(400).json({ error: "label is required" });
 		}
-
-		return res.status(500).json({
-			message: "Internal server error"
-		});
+		const team = await Driver.create({ label, value: label });
+		res.status(201).json(team);
+	} catch (error) {
+		res.status(500).json({ error });
 	}
 };
 
@@ -62,15 +56,12 @@ export const updateDriver = async (req: Request, res: Response) => {
 //** Delete Driver */
 export const deleteDriver = async (req: Request, res: Response) => {
 	try {
-		const driverId = req.params.driverId;
-		const driver = await Driver.findByIdAndDelete(driverId);
-
-		if (driver) {
-			return res.status(204).json({ message: "Deleted" });
-		} else {
-			return res.status(404).json({ message: "Not Found" });
+		const deleted = await Driver.findByIdAndDelete(req.params.id);
+		if (!deleted) {
+			return res.status(404).json({ error: "Team not found" });
 		}
-	} catch (error: any) {
-		return res.status(500).json({ error: error.message });
+		res.status(200).json({ _id: req.params.id });
+	} catch (error) {
+		res.status(500).json({ error });
 	}
 };
