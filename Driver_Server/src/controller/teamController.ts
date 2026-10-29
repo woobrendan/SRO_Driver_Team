@@ -4,20 +4,14 @@ import mongoose from "mongoose";
 
 export const createTeam = async (req: Request, res: Response) => {
 	try {
-		const { label, value } = req.body;
-		const newTeam = await Team.create({ label, value });
-
-		return res.status(201).json(newTeam);
-	} catch (error) {
-		if (error instanceof mongoose.Error.ValidationError) {
-			return res.status(400).json({
-				message: error.message
-			});
+		const label = String(req.body.label ?? "").trim();
+		if (!label) {
+			return res.status(400).json({ error: "label is required" });
 		}
-
-		return res.status(500).json({
-			message: "Internal server error"
-		});
+		const team = await Team.create({ label, value: label });
+		res.status(201).json(team);
+	} catch (error) {
+		res.status(500).json({ error });
 	}
 };
 
