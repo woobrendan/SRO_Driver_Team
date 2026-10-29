@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Driver } from "../../types/drivers";
-import { updateDriver, deleteDriver } from "./driversActions";
+import { updateDriverThunk, deleteDriverThunk } from "./driversActions";
 
 interface DriversState {
 	driversArr: Driver[];
@@ -25,14 +25,14 @@ const driversSlice = createSlice({
 			}
 		},
 
-		removeDrivers(state, action: PayloadAction<Driver>) {
+		removeDriver(state, action: PayloadAction<Driver>) {
 			const adjusted = state.driversArr.filter((driver) => driver._id !== action.payload._id);
 			state.driversArr = adjusted;
-			deleteDriver(action.payload);
+			deleteDriverThunk(action.payload);
 		},
 
-		updateDrivers(state, action: PayloadAction<Driver>) {
-			updateDriver(action.payload);
+		updateDriver(state, action: PayloadAction<Driver>) {
+			updateDriverThunk(action.payload);
 
 			state.driversArr = state.driversArr.map((driver) =>
 				driver._id === action.payload._id ? { ...action.payload } : driver
