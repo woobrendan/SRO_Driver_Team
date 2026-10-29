@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { Team } from "../../types/teams";
-import { updateTeam, deleteTeam } from "./teamsActions";
+import { updateTeamThunk, deleteTeamThunk } from "./teamsActions";
 
 interface TeamsState {
 	teamsArr: Team[];
@@ -28,11 +28,11 @@ const teamsSlice = createSlice({
 		removeTeam(state, action: PayloadAction<Team>) {
 			const adjusted = state.teamsArr.filter((team) => team._id !== action.payload._id);
 			state.teamsArr = adjusted;
-			deleteTeam(action.payload);
+			deleteTeamThunk(action.payload);
 		},
 
 		updateTeam(state, action: PayloadAction<Team>) {
-			updateTeam(action.payload);
+			updateTeamThunk(action.payload);
 
 			state.teamsArr = state.teamsArr.map((team) =>
 				team._id === action.payload._id ? { ...action.payload } : team
