@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Express API on Lambda (Teams & Drivers)
+
+Parameters:
+    MongoUri:
+        Type: String
+        NoEcho: true
+    AuthUsername:
+        Type: String
+    AuthPasswordHash:
+        Type: String
+        NoEcho: true
+    JwtSecret:
+        Type: String
+        NoEcho: true
+    FrontendOrigin:
+        Type: String
+
+Resources:
+    ExpressApi:
+        Type: AWS::Serverless::Function
+        Metadata:
+            BuildMethod: esbuild
+            BuildProperties:
+                Target: es2022
+                Minify: true
+                Sourcemap: true
+                EntryPoints:
+                    - src/lambda.ts
+        Properties:
+            FunctionName: team-list-api-v2
+            Handler: lambda.handler
+            Runtime: nodejs22.x
+            Timeout: 15
+            MemorySize: 256
+            CodeUri: .
+            Policies:
+                - AWSLambdaBasicExecutionRole
+            Environment:
+                Variables:
+                    NODE_ENV: production
+                    MONGO_URI: !Ref MongoUri
+                    AUTH_USERNAME: !Ref AuthUsername
+                    AUTH_PASSWORD_HASH: !Ref AuthPasswordHash
+                    JWT_SECRET: !Ref JwtSecret
+                    FRONTEND_ORIGIN: !Ref FrontendOrigin
+            Events:
+                Api:
+                    Type: Api
+                    Properties:
+                        Path: /{proxy+}
+                        Method: ANY
+
+Outputs:
+    ApiUrl:
+        Description: "Invoke URL for your Express API"
+        Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
