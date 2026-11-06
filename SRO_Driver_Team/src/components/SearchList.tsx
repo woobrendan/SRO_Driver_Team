@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode, type ChangeEvent } from "react";
+import "../styling/list.css";
 
 type SearchListProps<T> = {
 	items: T[];

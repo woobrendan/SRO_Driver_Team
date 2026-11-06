@@ -57,6 +57,13 @@
 	width: min(420px, 90vw);
 }
 
+.modal__panel input {
+	width: 80%;
+	box-sizing: border-box;
+	padding: 10px 12px;
+	font: inherit;
+}
+
 .modal__actions {
 	display: flex;
 	gap: 8px;

@@ -56,11 +56,11 @@ export const updateDriver = async (req: Request, res: Response) => {
 //** Delete Driver */
 export const deleteDriver = async (req: Request, res: Response) => {
 	try {
-		const deleted = await Driver.findByIdAndDelete(req.params.id);
+		const deleted = await Driver.findByIdAndDelete(req.params.driverId);
 		if (!deleted) {
 			return res.status(404).json({ error: "Team not found" });
 		}
-		res.status(200).json({ _id: req.params.id });
+		res.status(200).json({ _id: req.params.driverId });
 	} catch (error) {
 		res.status(500).json({ error });
 	}

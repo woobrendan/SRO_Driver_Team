@@ -56,11 +56,11 @@ export const updateTeam = async (req: Request, res: Response) => {
 //** Delete Team */
 export const deleteTeam = async (req: Request, res: Response) => {
 	try {
-		const deleted = await Team.findByIdAndDelete(req.params.id);
+		const deleted = await Team.findByIdAndDelete(req.params.teamId);
 		if (!deleted) {
 			return res.status(404).json({ error: "Team not found" });
 		}
-		res.status(200).json({ _id: req.params.id });
+		res.status(200).json({ _id: req.params.teamId });
 	} catch (error) {
 		res.status(500).json({ error });
 	}
